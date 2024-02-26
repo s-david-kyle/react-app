@@ -1,9 +1,6 @@
 import ListGroup from "./components/ListGroup";
-//import { ListGroupProps } from "./components/ListGroup";
 
 function App() {
-  //let prop = {
-
   let items = [
     "New York",
     "Los Angeles",
@@ -14,10 +11,18 @@ function App() {
     "San Antonio",
   ];
   let heading = "Cities";
-  //}
+
+  const handleSelectItem = (item: string) => {
+    console.log("Selected item:", item);
+  };
+
   return (
     <div>
-      <ListGroup items={items} heading={heading} />
+      <ListGroup
+        items={items}
+        heading={heading}
+        onSelectItem={handleSelectItem}
+      />
     </div>
   );
 }
