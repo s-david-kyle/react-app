@@ -1,0 +1,21 @@
+/* FILEPATH: /c:/Source/react1/react-app/src/components/ListGroup/ListGroup.css */
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.list-group-item {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.list-group-item:last-child {
+  margin-bottom: 0;
+}
