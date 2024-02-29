@@ -1,4 +1,5 @@
 import ListGroup from "./components/ListGroup";
+import Like from "./components/Like/Like";
 
 function App() {
   let items = [
@@ -18,6 +19,7 @@ function App() {
 
   return (
     <div>
+      <Like />
       <ListGroup
         items={items}
         heading={heading}
