@@ -9,6 +9,7 @@ function Like() {
       <button
         onClick={() => {
           setLiked(!likedIcon);
+          console.log("Liked:", likedIcon);
         }}
       >
         <AiFillHeart size={24} color={likedIcon ? "black" : "red"} />
@@ -17,4 +18,3 @@ function Like() {
   );
 }
 export default Like;
-//test
