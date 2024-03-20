@@ -1,6 +1,7 @@
-import z from "zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, useForm } from "react-hook-form";
+import categories from "../categories";
 
 const schema = z.object({
   description: z
@@ -10,22 +11,17 @@ const schema = z.object({
   category: z.string().min(1, { message: "Please provide a value for day" }),
 });
 
-type FormData = z.infer<typeof schema>;
+type ExpenseFormData = z.infer<typeof schema>;
 
-const ExpenseReport = () => {
+const ExpenseForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
-
-  const onSubmit = (data: FieldValues) => {
-    console.log("Data:");
-    console.log(data);
-  };
+  } = useForm<ExpenseFormData>({ resolver: zodResolver(schema) });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
       <div className="mb-3">
         <label htmlFor="description" className="form-label">
           Description
@@ -33,6 +29,7 @@ const ExpenseReport = () => {
         <input
           {...register("description")}
           id="description"
+          type="text"
           className="form-control"
         />
         {errors.description && (
@@ -57,11 +54,18 @@ const ExpenseReport = () => {
         <label htmlFor="category" className="form-label">
           Category
         </label>
-        <select {...register("category")} id="category" className="form-select">
+        <select
+          {...register("category")}
+          name="category"
+          id="category"
+          className="form-select"
+        >
           <option value=""></option>
-          <option value="groceries">Groceries</option>
-          <option value="utilities">Utilities</option>
-          <option value="entertainment">Entertainment</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
         {errors.category && (
           <p className="text-danger">{errors.category.message}</p>
@@ -74,4 +78,4 @@ const ExpenseReport = () => {
   );
 };
 
-export default ExpenseReport;
+export default ExpenseForm;
