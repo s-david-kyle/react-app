@@ -12,11 +12,11 @@ const schema = z.object({
     errorMap: () => ({ message: "Please select a category" }),
   }),
 });
-interface ExpenseFormDat32 {
-  description: string;
-  amount: number;
-  category: string;
-}
+// interface ExpenseFormDat32 {
+//   description: string;
+//   amount: number;
+//   category: string;
+// }
 
 type ExpenseFormData = z.infer<typeof schema>;
 
