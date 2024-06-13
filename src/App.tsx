@@ -1,40 +1,40 @@
-import { useState } from "react";
-import ExpenseList from "./expense-tracker/components/ExpenseList";
-import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
+import axios, { CanceledError } from "axios";
+import { useEffect, useState } from "react";
 
-import ExpenseForm from "./expense-tracker/components/ExpenseForm";
+interface User {
+  id: number;
+  name: string;
+}
 
 function App() {
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [expenses, setExpenses] = useState([
-    { id: 1, description: "Rent", amount: 1600, category: "Utilities" },
-    { id: 2, description: "Groceries", amount: 100, category: "Groceries" },
-    { id: 3, description: "Gas", amount: 40, category: "Entertainment" },
-  ]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState("");
 
-  const visibleEpenses = selectedCategory
-    ? expenses.filter((e) => e.category === selectedCategory)
-    : expenses;
+  useEffect(() => {
+    const controller = new AbortController();
+
+    axios
+      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
+        signal: controller.signal,
+      })
+      .then((res) => console.log(setUsers(res.data)))
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+        setError(err.message);
+      });
+
+    return () => controller.abort();
+  }, []);
 
   return (
-    <div>
-      <div className="mb-5">
-        <ExpenseForm
-          onAddExpense={(expense) =>
-            setExpenses([...expenses, { ...expense, id: expenses.length + 1 }])
-          }
-        ></ExpenseForm>
-      </div>
-      <div className="mb-3">
-        <ExpenseFilter
-          selectCategory={(category) => setSelectedCategory(category)}
-        ></ExpenseFilter>
-      </div>
-      <ExpenseList
-        expenses={visibleEpenses}
-        onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
-      ></ExpenseList>
-    </div>
+    <>
+      {error && <div>{error}</div>}
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    </>
   );
 }
 
